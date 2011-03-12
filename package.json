@@ -1,0 +1,16 @@
+{
+    "name": "node-torrent",
+    "description": "Bittorrent client for node.js.",
+    "version": "0.0.1",
+    "homepage" : "http://github.com/superafroman/node-torrent",
+    "author": "Max Stewart <max.stewart@superafroman.com>",
+    "main": "lib/client.js",
+    "repository" : {
+        "type" : "git",
+         "url" : "http://github.com/superafroman/node-torrent.git"
+    },
+    "directories": {
+        "lib": "./lib"
+    },
+    "engines": { "node": ">= 0.4.2" }
+}
