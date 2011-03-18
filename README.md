@@ -2,10 +2,15 @@
 
 A simple bittorrent client for node.
 
-## Notes
+## Features
+  * Downloading based on .torrent file
 
-This is very much a work in progress.  The end goal is a simple 
-bittorrent client for use in other node applications.
+## TODO
+  * Save pieces to file
+  * Resume
+  * Accept incoming connections
+  * Allow seeding
+  * Hook up DHT, possibly using node-dht
 
 ## Usage
 
