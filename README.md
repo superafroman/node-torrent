@@ -6,7 +6,6 @@ A simple bittorrent client for node.
   * Downloading based on .torrent file
 
 ## TODO
-  * Save pieces to file
   * Resume
   * Accept incoming connections
   * Allow seeding
