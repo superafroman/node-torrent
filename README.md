@@ -6,9 +6,11 @@ A simple bittorrent client for node.
   * Downloading based on .torrent file
 
 ## TODO
-  * Resume
   * Accept incoming connections
   * Allow seeding
+  * Share ratio
+  * Accurate reporting on download/upload speeds
+  * Resume
   * Hook up DHT, possibly using node-dht
 
 ## Usage
