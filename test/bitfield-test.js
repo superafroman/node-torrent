@@ -1,7 +1,7 @@
 var vows = require('vows');
 var assert = require('assert');
 
-var BitField = require('../lib/bitfield');
+var BitField = require('../lib/util/bitfield');
 
 vows.describe('BitField').addBatch({
   "A BitField set to 10101": {
