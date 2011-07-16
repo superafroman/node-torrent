@@ -9,6 +9,10 @@
         "type" : "git",
          "url" : "http://github.com/superafroman/node-torrent.git"
     },
+    "dependencies": {
+        "log4js": ">= 0.2.5",
+        "vows": ">= 0.5.6"
+    },
     "directories": {
         "lib": "./lib"
     },
