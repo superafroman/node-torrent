@@ -4,13 +4,17 @@ A simple bittorrent client for node.
 
 ## Features
   * Downloading based on .torrent file
+  * Resume
+
+## In progress
+  * UPD support
 
 ## TODO
   * Accept incoming connections
   * Allow seeding
   * Share ratio
   * Accurate reporting on download/upload speeds
-  * Resume
+  * Limit download/upload speeds
   * Hook up DHT, possibly using node-dht
 
 ## Usage
