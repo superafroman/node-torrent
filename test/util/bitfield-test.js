@@ -1,7 +1,7 @@
 var vows = require('vows');
 var assert = require('assert');
 
-var BitField = require('../lib/util/bitfield');
+var BitField = require('../../lib/util/bitfield');
 
 vows.describe('BitField').addBatch({
   "A BitField set to 10101": {
@@ -44,9 +44,9 @@ vows.describe('BitField').addBatch({
         assert.ok(result.isSet(4));
       }
     },
-    "when calling `setIndexes()`": {
+    "when calling `setIndices()`": {
       topic: function(bitfield) {
-        return bitfield.setIndexes();
+        return bitfield.setIndices();
       },
       "should return `[0, 2, 4]`": function(result) {
         assert.equal(result[0], 0);
