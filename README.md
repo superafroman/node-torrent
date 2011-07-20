@@ -7,7 +7,7 @@ A simple bittorrent client for node.
   * Resume
 
 ## In progress
-  * UPD support
+  * UDP support
 
 ## TODO
   * Accept incoming connections
