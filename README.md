@@ -5,17 +5,17 @@ A simple bittorrent client for node.
 ## Features
   * Downloading based on .torrent file
   * Resume
-
+  * Seeding
+  
 ## In progress
   * UDP support
 
 ## TODO
-  * Accept incoming connections
-  * Allow seeding
   * Share ratio
   * Accurate reporting on download/upload speeds
   * Limit download/upload speeds
   * Hook up DHT, possibly using node-dht
+  * Expose nice programmatic API for interacting with torrents/peers/trackers
 
 ## Usage
 
@@ -27,7 +27,7 @@ A simple bittorrent client for node.
 
 (The MIT License)
 
-Copyright (c) 2010 Max Stewart &lt;max.stewart@superafroman.com&gt;
+Copyright (c) 2011 Max Stewart &lt;max.stewart@superafroman.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
