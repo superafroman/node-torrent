@@ -6,21 +6,21 @@ A simple bittorrent client for node.
   * Downloading based on .torrent file
   * Resume
   * Seeding
+  * UDP support
   
 ## In progress
-  * UDP support
+  * Hook up DHT (magnet links)
 
 ## TODO
   * Share ratio
   * Accurate reporting on download/upload speeds
   * Limit download/upload speeds
-  * Hook up DHT, possibly using node-dht
   * Expose nice programmatic API for interacting with torrents/peers/trackers
 
 ## Usage
 
     var Client = require('node-torrent');
-    var client = new Client();
+    var client = new Client({logLevel: 'DEBUG'});
     client.addTorrent('a.torrent');
 
 ## License 
