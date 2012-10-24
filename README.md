@@ -21,7 +21,16 @@ A simple bittorrent client for node.
 
     var Client = require('node-torrent');
     var client = new Client({logLevel: 'DEBUG'});
-    client.addTorrent('a.torrent');
+    var torrent = client.addTorrent('a.torrent');
+    
+    //when the torrent completes, move its files to another area
+    torrent.on('complete', function() {
+        console.log('complete!');
+        torrent.files.forEach(function(file) {
+            fs.rename(file.path, '/new/path/' + file.name);
+        });
+    });
+    
 
 ## License 
 
