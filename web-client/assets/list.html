@@ -1,0 +1,29 @@
+<input type="text" ng-model="search" class="search-query" placeholder="Search">
+<table>
+	<thead>
+		<th>Name</th>
+		<th>Size</th>
+		<th>Progress</th>
+		<th>Health</th>
+		<th>Download Speed</th>
+		<th>Upload Speed</th>
+		<th>Estimated</th>
+		<th>Proirity</th>
+	</thead>
+	<tbody>
+		<tr ng-repeat="torrent in torrents | filter:search | orderBy:'name'" >
+			<td>{{torrent.name}}</td>
+			<td>{{torrent.size}}</td>
+			<td>
+				<div class="progress progress-striped">
+	  				<div class="bar" style="width: {{torrent.progress}};"></div>
+				</div>
+			</td>
+			<td>{{torrent.health}}</td>
+			<td>{{torrent.downSpeed}}</td>
+			<td>{{torrent.upSpeed}}</td>
+			<td>{{torrent.estimated}}</td>
+			<td>{{torrent.priority}}</td>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,12 @@
+<form "addTorrent">
+	<div class="control-group" ng-class="{error: addTorrent.url.$invalid}">
+		<label>Url</label>
+		<input type="url" name="url" ng-model="torrent.url" required>
+		<span ng-show="addTorrent.url.$error.required" class="help-inline">Required</span>
+		<span ng-show="addTorrent.url.$error.url" class="help-inline">Not a URL</span>
+	</div>
+	
+	<br>
+	<a href="#/" class="btn"> Cancel </a>
+	<button ng-click="save()" ng-disabled="addTorrent.$invalid" class="btn btn-primary"> Add </button>
+</form>
