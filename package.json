@@ -10,6 +10,7 @@
          "url" : "http://github.com/superafroman/node-torrent.git"
     },
     "dependencies": {
+        "base32": ">= 0.0.5",
         "log4js": ">= 0.3.0",
         "vows": ">= 0.5.6",
         "dht.js": ">= 0.2.14"
@@ -17,5 +18,5 @@
     "directories": {
         "lib": "./lib"
     },
-    "engines": { "node": ">= 0.4.2" }
+    "engines": { "node": ">= 0.8.0" }
 }
