@@ -3,19 +3,22 @@
 A simple bittorrent client for node.
 
 ## Features
-  * Downloading based on .torrent file
+  * .torrent support
   * Resume
   * Seeding
-  * UDP support
+  * UDP trackers
+  * DHT peer discovery
+  * Magnet links
+  * Add torrent via URL (file:, https:, http:, magnet:)
   
 ## In progress
-  * Hook up DHT (magnet links)
+  * Expose nice programmatic API for interacting with torrents/peers/trackers
 
 ## TODO
   * Share ratio
   * Accurate reporting on download/upload speeds
   * Limit download/upload speeds
-  * Expose nice programmatic API for interacting with torrents/peers/trackers
+  * Persist?
 
 ## Usage
 
