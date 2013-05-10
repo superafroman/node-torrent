@@ -1,0 +1,16 @@
+body {
+    box-sizing: inherit;
+    text-align: center;
+    background: #deffee /* W3C */
+}
+
+header {
+    text-align: center;
+}
+
+#wrapper {
+    margin: auto auto;
+    width: 800px;
+    text-align: left;
+}
+

@@ -1,35 +1,82 @@
 var http = require('http');
 var fs = require('fs');
 var util = require('util');
+var urlParser = require('url');
+var log4js = require('log4js');
+var LOGGER = log4js.getLogger('web-server.js');
 
+// TODO: This weird URL probably means the web torrentClient project should be
+// TODO: separate or encapsulate node-torrent in some form...
+var Client = require('./../../node-torrent');
+var options = require('./options.json');
 
-// var Client = require('node-torrent');
-// var client = new Client({logLevel: 'DEBUG'});
-// var torrent = client.addTorrent('a.torrent');
+// TODO: Add that string as prefix to json files `")]}',\n"`
+function main(argv) {
+    new WebServer().start();
+}
 
-// when the torrent completes, move it's files to another area
-// torrent.on('complete', function() {
-//     console.log('complete!');
-//     torrent.files.forEach(function(file) {
-//         var newPath = '/new/path/' + file.path;
-//         fs.rename(file.path, newPath);
-//         // while still seeding need to make sure file.path points to the right place
-//         file.path = newPath;
-//     });
-// });
+function WebServer() {
+    this.server = http.createServer(this.handleRequest.bind(this));
+    this.torrentClient = new Client(options);
+    this.torrent = this.torrentClient.addTorrent('b.torrent');
+}
 
-http.createServer(function (req, res) {
-	var self = this;
+WebServer.MimeMap = {
+    'txt': 'text/plain',
+    'html': 'text/html',
+    'css': 'text/css',
+    'xml': 'application/xml',
+    'json': 'application/json',
+    'js': 'application/javascript',
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'gif': 'image/gif',
+    'png': 'image/png',
+    'svg': 'image/svg+xml'
+};
 
-  	res.writeHead(200, {'Content-Type': 'text/html'});
-  	var file = fs.createReadStream('Documents/GitHub/node-torrent/web-client/assets/index.html');
-    file.on('data', res.write.bind(res));
-    file.on('close', function() {
-      res.end();
-    });
-    file.on('error', function(error) {
-      res.end(error.message);
-    });
-}).listen(1337, "127.0.0.1");
+WebServer.prototype.start = function () {
+    this.server.listen(1337, "127.0.0.1");
+    LOGGER.info('Web Server running at http://127.0.0.1:1337/');
+};
 
-console.log('Server running at http://127.0.0.1:1337/');
+WebServer.prototype.handleRequest = function (req, res) {
+    var pathname = urlParser.parse(req.url).pathname;
+    LOGGER.info(req.method + ' request with path name: ' + pathname);
+
+    switch (req.method) {
+        case 'GET':
+            switch (pathname) {
+                case '/torrentList':
+                    this.getTorrentsList(res);
+                    break;
+                default :
+                    pathname = (pathname === '/' ? '/index.html' : pathname);
+
+                    LOGGER.info('Redirecting to /assets' + pathname);
+
+                    res.writeHead(200, {'Content-Type': WebServer.MimeMap[pathname.split('.').pop()] || 'text/plain'});
+
+                    var file = fs.createReadStream('assets' + pathname);
+                    file.on('data', res.write.bind(res));
+                    file.on('close', function () {
+                        res.end();
+                    });
+                    file.on('error', function (error) {
+                        res.end(error.message);
+                    });
+                    break;
+            }
+            break;
+        default :
+            break;
+    }
+};
+
+WebServer.prototype.getTorrentsList = function (res) {
+    LOGGER.info(JSON.stringify(this.torrentClient.listTorrents()));
+    res.write(JSON.stringify(this.torrentClient.listTorrents()));
+    res.end();
+};
+
+main(process.argv);

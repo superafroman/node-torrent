@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html ng-app="torrent-client">
-	<head>
-		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
-	    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular-resource.min.js"></script>
-	</head>
-	<body>
-		<div class="row">
-			<div class="span9">
-				<button class="btn btn-primary"><i class="icon-plus icon-white"></i> Add Torrent</button>
-			</div>
-		</div>
-		<h2>List of Torrents</h2>
-		<div class="row" >
-			<div ng-view></div>
-		</div>
-	</body>
+<html ng-app="web-client">
+<head>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="web-client.css" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-resource.js"></script>
+    <script src="web-client.js"></script>
+    <script src="connection.js"></script>
+</head>
+<body>
+<div id="wrapper">
+    <header>
+        <h2>The node-torrent Client</h2>
+    </header>
+    <div class="row">
+        <div ng-view></div>
+    </div>
+    <div>
+        <h6 style="color:#70ff79">{{message}}</h6>
+    </div>
+</div>
+</body>
 </html>

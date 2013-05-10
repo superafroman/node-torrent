@@ -1,29 +1,41 @@
-<input type="text" ng-model="search" class="search-query" placeholder="Search">
-<table>
-	<thead>
-		<th>Name</th>
-		<th>Size</th>
-		<th>Progress</th>
-		<th>Health</th>
-		<th>Download Speed</th>
-		<th>Upload Speed</th>
-		<th>Estimated</th>
-		<th>Proirity</th>
-	</thead>
-	<tbody>
-		<tr ng-repeat="torrent in torrents | filter:search | orderBy:'name'" >
-			<td>{{torrent.name}}</td>
-			<td>{{torrent.size}}</td>
-			<td>
-				<div class="progress progress-striped">
-	  				<div class="bar" style="width: {{torrent.progress}};"></div>
-				</div>
-			</td>
-			<td>{{torrent.health}}</td>
-			<td>{{torrent.downSpeed}}</td>
-			<td>{{torrent.upSpeed}}</td>
-			<td>{{torrent.estimated}}</td>
-			<td>{{torrent.priority}}</td>
-		</tr>
-	</tbody>
+<div class="row">
+    <div class="span4">
+        <div class="input-prepend">
+            <span class="add-on"><i class="icon-search"></i></span>
+            <input type="text" ng-model="search.name" class="span4" placeholder="Search">
+        </div>
+    </div>
+    <div class="span3">
+        <a class="btn btn-primary" href="#/new"><i class="icon-plus icon-white"></i> Add Torrent</a>
+    </div>
+</div>
+<table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Progress</th>
+        <th>Health</th>
+        <th>Download Speed</th>
+        <th>Upload Speed</th>
+        <th>Estimated</th>
+        <th>Proirity</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="torrent in torrents | filter:search | orderBy:'name'">
+        <td>{{torrent.name}}</td>
+        <td>{{torrent.size | number}} bytes</td>
+        <td>
+            <div class="progress progress-striped active">
+                <div class="bar" style="width: {{torrent.downloaded | number:0}}%"></div>
+            </div>
+        </td>
+        <td>{{torrent.health}}</td>
+        <td>{{torrent.downloadRate | number:2}} bps</td>
+        <td>{{torrent.uploadRate | number:2}} bps</td>
+        <td>{{torrent.estimated}}</td>
+        <td>{{torrent.priority}}</td>
+    </tr>
+    </tbody>
 </table>
