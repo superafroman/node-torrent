@@ -1,6 +1,8 @@
 {
     "downloadPath": "C:\\Downloads",
-    "portRangeStart": 6881,
-    "portRangeEnd": 6889,
+    "portRange": {
+        "start": 6881,
+        "end": 6889
+    },
     "logLevel": "INFO"
 }

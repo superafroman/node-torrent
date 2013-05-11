@@ -10,8 +10,18 @@ function ListCtrl($scope, Torrents) {
     $scope.torrents = Torrents.query();
 }
 
-function CreateCtrl($scope, Torrents) {
-//	$scope.save = function() {
-//		Torrent.save($scope.torrent)
-//	}
+function CreateCtrl($scope, $location, Torrents) {
+    var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+    var magnetPattern = /magnet:\?xt=urn:\S{20,200}/i;
+
+    $scope.save = function () {
+        if ($scope.torrent.url &&
+            ((magnetPattern.test($scope.torrent.url)) ||
+                urlPattern.test($scope.torrent.url))) {
+
+            Torrents.save($scope.torrent, function () {
+                $location.path('/');
+            });
+        }
+    }
 }

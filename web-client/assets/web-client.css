@@ -1,7 +1,7 @@
 body {
     box-sizing: inherit;
     text-align: center;
-    background: #deffee /* W3C */
+    background-color: rgba(200, 255, 150, 1);
 }
 
 header {
@@ -12,5 +12,10 @@ header {
     margin: auto auto;
     width: 800px;
     text-align: left;
+}
+
+.table th,
+.table td {
+    border-top: 1px solid #aaaaaa;
 }
 
