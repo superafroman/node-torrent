@@ -1,6 +1,6 @@
-# node-torrent
+# node-torrent WebApp
 
-A simple bittorrent client for node.
+An angular.js web application for node-torrent
 
 ## Features
   * .torrent support
@@ -10,40 +10,39 @@ A simple bittorrent client for node.
   * DHT peer discovery
   * Magnet links
   * Add torrent via URL (file:, https:, http:, magnet:)
+  * Simple web server that runs locally and hosts web interface
   
 ## In progress
-  * Expose nice programmatic API for interacting with torrents/peers/trackers
+  * Mobile support
 
 ## TODO
   * Share ratio
   * Accurate reporting on download/upload speeds
   * Limit download/upload speeds
   * Persist?
+  * Secure login and mac address filtering
+  * dyndns.com integrated support for remote controlling the app.
 
 ## Usage
+    * Download
+        $ git clone git://github.com/davidyaha/node-torrent.git
+        $ cd node-torrent
 
-```javascript
-var Client = require('node-torrent');
-var client = new Client({logLevel: 'DEBUG'});
-var torrent = client.addTorrent('a.torrent');
+    * Install
+        $ npm install
 
-// when the torrent completes, move it's files to another area
-torrent.on('complete', function() {
-    console.log('complete!');
-    torrent.files.forEach(function(file) {
-        var newPath = '/new/path/' + file.path;
-        fs.rename(file.path, newPath);
-        // while still seeding need to make sure file.path points to the right place
-        file.path = newPath;
-    });
-});
-```
+    * Run
+        $ cd web-client
+        $ node web-server.js
+
+    * Now open your browser and go to 127.0.0.1:1337.
 
 ## License 
 
 (The MIT License)
 
 Copyright (c) 2011 Max Stewart &lt;max.stewart@superafroman.com&gt;
+Copyright (c) 2013 David Yahalomi &lt;davidyaha@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
