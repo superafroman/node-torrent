@@ -2,3 +2,7 @@
 /test-2.torrent
 /ref
 .project
+/node_modules
+/.idea
+/web-client/angular-seed
+/web-client/assets/libs
