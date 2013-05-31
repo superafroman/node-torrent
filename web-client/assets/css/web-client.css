@@ -10,7 +10,6 @@ header {
 
 #wrapper {
     margin: auto auto;
-    /*width: 900px;*/
     text-align: left;
 }
 
@@ -26,6 +25,7 @@ header {
 }
 
 .my-table {
+    margin-top: 10px;
     background-color: rgba(200, 200, 200, 0.5);
     border-radius: 18px 5px 18px 5px;
 }
@@ -43,7 +43,7 @@ header {
     color: #ffffff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     background-color: #E9003A;
-    *background-color: # #E9003A;
+    *background-color: #E9003A;
     background-image: -moz-linear-gradient(top, #F43D64, #E9003A);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F43D64), to(#E9003A));
     background-image: -webkit-linear-gradient(top, #F43D64, #E9003A);
