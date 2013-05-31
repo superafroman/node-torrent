@@ -19,7 +19,6 @@ function main(argv) {
 function WebServer() {
     this.torrentClient = new Client(options);
     this.server = http.createServer(this.handleRequest.bind(this));
-//    this.torrent = this.torrentClient.addTorrent('b.torrent');
 }
 
 WebServer.MimeMap = {
@@ -88,7 +87,7 @@ WebServer.prototype._postTorrent = function (req) {
     req.on('error', function (err) {
         LOGGER.error(err);
     });
-}
+};
 
 WebServer.prototype._getFile = function (pathname, res) {
     pathname = (pathname === '/' ? '/index.html' : pathname);
@@ -96,29 +95,33 @@ WebServer.prototype._getFile = function (pathname, res) {
     LOGGER.info('Redirecting to /assets' + pathname);
 
     var mimeType = pathname.split('.').pop();
-    res.writeHead(200, {'Content-Type': WebServer.MimeMap[mimeType] || 'text/plain'});
 
     if (mimeType === 'json') {
         res.write(")]}',\n");
     }
 
     var file = fs.createReadStream('assets' + pathname);
+    file.on('open', function() {
+        res.writeHead(200, {'Content-Type': WebServer.MimeMap[mimeType] || 'text/plain'});
+    });
     file.on('data', res.write.bind(res));
     file.on('close', function () {
         res.end();
     });
     file.on('error', function (error) {
+        res.writeHead(404);
         res.end(error.message);
     });
     return pathname;
-}
+};
 
 WebServer.prototype._getTorrentsList = function (res) {
     var torrentsJSON = [];
     var torrents = this.torrentClient.torrents;
 
     for (var hash in torrents) {
-        torrentsJSON.push(WebServer._stripFat(torrents[hash]));
+        if (torrents.hasOwnProperty(hash))
+            torrentsJSON.push(WebServer._stripFat(torrents[hash]));
     }
 
     LOGGER.info("Responding with json: " + JSON.stringify(torrentsJSON));
@@ -132,7 +135,8 @@ WebServer._stripFat = function (torrent) {
 
     json.name = torrent.name;
     json.size = torrent.size;
-    json.downloaded = torrent.stats.downloaded / torrent.size * 100;
+    json.downloaded = torrent.stats.downloaded;
+    json.progress = (torrent.stats.downloaded / torrent.size * 100) || 0;
     json.downloadRate = torrent.stats.downloadRate;
     json.uploadRate = torrent.stats.uploadRate;
 
