@@ -1,7 +1,7 @@
 body {
     box-sizing: inherit;
     text-align: center;
-    background-color: rgba(200, 255, 150, 1);
+    background: #A0F06C ;
 }
 
 header {
@@ -10,7 +10,7 @@ header {
 
 #wrapper {
     margin: auto auto;
-    width: 800px;
+    /*width: 900px;*/
     text-align: left;
 }
 
@@ -19,3 +19,38 @@ header {
     border-top: 1px solid #aaaaaa;
 }
 
+.table-hover tbody tr:hover > td,
+.table-hover tbody tr:hover > th {
+    background-color: rgba(200, 200, 200, 0.3);
+    border-radius: 0px 0px 0px 0px;
+}
+
+.my-table {
+    background-color: rgba(200, 200, 200, 0.5);
+    border-radius: 18px 5px 18px 5px;
+}
+
+.btn-primary {
+    /**background-color: #AE2C4C;*/
+    background: #E9003A linear-gradient(to bottom, #F43D64, #E9003A) repeat-x;
+}
+
+btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+    color: #ffffff;
+    background-color: #E9003A;
+    /**background-color: #AE2C4C;*/
+}
+
+.btn-primary:active,
+.btn-primary.active {
+    background-color: #970026;
+}
+
+.btn-group.open .btn-primary.dropdown-toggle {
+    background-color: #AE2C4C;
+}
