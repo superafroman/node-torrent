@@ -9,15 +9,40 @@ var LOGGER = log4js.getLogger('web-server.js');
 // TODO: This weird URL probably means the web torrentClient project should be
 // TODO: separate or encapsulate node-torrent in some form...
 var Client = require('./../../node-torrent');
-var options = require('./options.json');
 
-// TODO: Add that string as prefix to json files `")]}',\n"`
+var defaultOptions = {
+    "downloadPath": "C:\\Downloads",
+    "portRange": {
+        "start": 6881,
+        "end": 6889
+    },
+    "logLevel": "INFO"
+};
+
 function main(argv) {
-    new WebServer().start();
+    var optionsPath = 'options.json';
+
+    new WebServer(optionsPath).start();
 }
 
-function WebServer() {
-    this.torrentClient = new Client(options);
+function WebServer(optionsPath) {
+    var self = this;
+
+    this.optionsPath = optionsPath;
+
+    fs.watch(this.optionsPath, {persistent: false}, function (event, filename) {
+        if (event === 'rename') {
+            self.optionsPath = filename || self.optionsPath;
+        } else if (event === 'change') {
+            LOGGER.warn('The options file was changed!');
+            self._readOptionsFile();
+        }
+    });
+
+    this._readOptionsFile(function () {
+        self.torrentClient = new Client(self.options);
+    });
+
     this.server = http.createServer(this.handleRequest.bind(this));
 }
 
@@ -50,18 +75,26 @@ WebServer.prototype.handleRequest = function (req, res) {
                 case '/torrentList':
                     this._getTorrentsList(res);
                     break;
+                case '/options':
+                    this._getOptions(res);
+                    break;
                 default :
                     pathname = this._getFile(pathname, res);
                     break;
             }
             break;
         case 'POST':
-            if (pathname === '/torrentList') {
-                this._postTorrent(req);
+            switch (pathname) {
+                case '/torrentList':
+                    this._postTorrent(req, res);
+                    break;
+                case '/options':
+                    this._postOptions(req, res);
+                    break;
+                default :
+                    res.writeHead(404);
+                    break;
             }
-
-            res.writeHead(200);
-            res.end();
             break;
         default :
             res.writeHead(501);
@@ -71,38 +104,91 @@ WebServer.prototype.handleRequest = function (req, res) {
     }
 };
 
-WebServer.prototype._postTorrent = function (req) {
-    var body = '';
-    var self = this;
-    var addTorrent = function (self) {
-        LOGGER.info('Got new torrent url:' + body);
-        var object = JSON.parse(body);
-        self.torrentClient.addTorrent(object.url);
-    };
+WebServer.prototype._readOptionsFile = function (/*cb*/) {
+    var cb;
+    if (typeof arguments[0] === 'function')
+        cb = arguments[0];
+    else
+        cb = function () {
+        };
 
+    var self = this;
+    var options = '';
+
+    fs.createReadStream(this.optionsPath)
+        .on('data', function (data) {
+            options += data;
+        })
+        .on('close', function () {
+            self.options = JSON.parse(options) || defaultOptions;
+            cb();
+        })
+        .on('error', function (err) {
+            LOGGER.error(err.message);
+            self.options = defaultOptions;
+            cb();
+        });
+};
+
+WebServer.prototype._postOptions = function (req, res) {
+    var body = '';
     req.on('data', function (data) {
         body += data;
-    });
-    req.on('end', addTorrent.bind(this, self));
-    req.on('error', function (err) {
-        LOGGER.error(err);
-    });
+    })
+        .on('end', function () {
+            LOGGER.info('Got an options object: ' + body);
+
+            var optionsFile = fs.createWriteStream(this.optionsPath)
+                .on('error', function () {
+                    res.writeHead(400).end();
+                });
+            optionsFile.write(body, function () {
+                res.writeHead(204).end();
+            });
+        });
+
+    return this;
+};
+
+WebServer.prototype._postTorrent = function (req, res) {
+    var self = this;
+
+    var body = '';
+    req.on('data', function (data) {
+        body += data;
+    })
+        .on('end', function () {
+            LOGGER.info('Got new torrent url: ' + body);
+
+            var object = JSON.parse(body);
+            self.torrentClient.addTorrent(object.url);
+            res.writeHead(204).end();
+        })
+        .on('error', function (err) {
+            LOGGER.error(err);
+            res.writeHead(400).end();
+        });
+
+    return this;
 };
 
 WebServer.prototype._getFile = function (pathname, res) {
+    // Redirection check
     pathname = (pathname === '/' ? '/index.html' : pathname);
 
     LOGGER.info('Redirecting to /assets' + pathname);
 
+    // Getting the mime type for later use.
     var mimeType = pathname.split('.').pop();
 
-    if (mimeType === 'json') {
-        res.write(")]}',\n");
-    }
-
-    var file = fs.createReadStream('assets' + pathname);
-    file.on('open', function() {
+    // Reading from file and responding to client
+    pathname = 'assets' + pathname;
+    var file = fs.createReadStream(pathname);
+    file.on('open', function () {
         res.writeHead(200, {'Content-Type': WebServer.MimeMap[mimeType] || 'text/plain'});
+        if (mimeType === 'json') {
+            res.write(")]}',\n");
+        }
     });
     file.on('data', res.write.bind(res));
     file.on('close', function () {
@@ -112,7 +198,13 @@ WebServer.prototype._getFile = function (pathname, res) {
         res.writeHead(404);
         res.end(error.message);
     });
+
+    // Returns the path that was handled.
     return pathname;
+};
+
+WebServer.prototype._getOptions = function (res) {
+    WebServer._jsonResponse(this.options, res);
 };
 
 WebServer.prototype._getTorrentsList = function (res) {
@@ -121,16 +213,21 @@ WebServer.prototype._getTorrentsList = function (res) {
 
     for (var hash in torrents) {
         if (torrents.hasOwnProperty(hash))
-            torrentsJSON.push(WebServer._stripFat(torrents[hash]));
+            torrentsJSON.push(WebServer._torrentStripFat(torrents[hash]));
     }
 
-    LOGGER.info("Responding with json: " + JSON.stringify(torrentsJSON));
+    WebServer._jsonResponse(torrentsJSON, res);
+};
+
+WebServer._jsonResponse = function (json, res) {
+    LOGGER.info("Responding with json: " + JSON.stringify(json));
+    res.writeHead(200, {'Content-Type': WebServer.MimeMap['json']});
     res.write(")]}',\n");
-    res.write(JSON.stringify(torrentsJSON));
+    res.write(JSON.stringify(json));
     res.end();
 };
 
-WebServer._stripFat = function (torrent) {
+WebServer._torrentStripFat = function (torrent) {
     var json = {};
 
     json.name = torrent.name;
