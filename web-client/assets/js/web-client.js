@@ -5,13 +5,14 @@ var app = angular.module('web-client', ['connection', 'byte-filters', 'ui.bootst
             otherwise({redirectTo: '/'});
     });
 
-function ListCtrl($scope, $location, $timeout, Torrents) {
+function ListCtrl($scope, $location, $timeout, $log, Torrents) {
     function timedQuery() {
-        $timeout(function() {
+        $timeout(function () {
             $scope.torrents = Torrents.query();
             timedQuery();
-        },($scope.torrents && $scope.torrents.length > 0 ? 1000 : 5000));
+        }, ($scope.torrents && $scope.torrents.length > 0 ? 1000 : 5000));
     }
+
     timedQuery();
 
     // Torrent url supported
@@ -19,13 +20,14 @@ function ListCtrl($scope, $location, $timeout, Torrents) {
     var magnetPattern = /magnet:\?xt=urn:\S{20,200}/i;
 
     $scope.save = function () {
+        $log.info($scope.torrent);
         if ($scope.torrent.url &&
             ((magnetPattern.test($scope.torrent.url)) ||
                 urlPattern.test($scope.torrent.url))) {
 
             Torrents.save($scope.torrent, function () {
-                $location.path('/');
             });
         }
+        $location.path('/');
     }
 }

@@ -15,8 +15,9 @@ angular.module('ui-directives',
             templateUrl: 'partials/directives/popover/popover-html-popup.html',
             controller: 'GetTemplateCtrl',
             link: function postLink(scope, element, attrs, getTemplateCtrl) {
+                // TODO The tt_content refernce is a hack.. need to find a better way of getting content value.
                 getTemplateCtrl.getTemplateByURL(scope.$parent.tt_content, function (data, status) {
-                    if (status == 200){
+                    if (status == 200) {
                         scope.content = data;
                     } else {
                         scope.content = getTemplateCtrl.error();
