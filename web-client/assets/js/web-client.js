@@ -1,11 +1,11 @@
-var app = angular.module('web-client', ['connection', 'byte-filters', 'ui.bootstrap', 'ui-directives']).
+var app = angular.module('web-client', ['connection', 'byte-filters', '$strap.directives']).
     config(function ($routeProvider) {
         $routeProvider.
             when('/', {controller: ListCtrl, templateUrl: 'partials/list.html'}).
             otherwise({redirectTo: '/'});
     });
 
-function ListCtrl($scope, $location, $timeout, $log, Torrents) {
+function ListCtrl($scope, $timeout, Torrents) {
     function timedQuery() {
         $timeout(function () {
             $scope.torrents = Torrents.query();
@@ -14,20 +14,24 @@ function ListCtrl($scope, $location, $timeout, $log, Torrents) {
     }
 
     timedQuery();
+}
 
+app.controller('AddCtrl', function ($scope, $log, Torrents) {
     // Torrent url supported
     var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
     var magnetPattern = /magnet:\?xt=urn:\S{20,200}/i;
 
+    $scope.torrent = {};
+
     $scope.save = function () {
-        $log.info($scope.torrent);
         if ($scope.torrent.url &&
             ((magnetPattern.test($scope.torrent.url)) ||
                 urlPattern.test($scope.torrent.url))) {
 
             Torrents.save($scope.torrent, function () {
             });
+            $scope.hide();
+            $scope.torrent = {};
         }
-        $location.path('/');
     }
-}
+});

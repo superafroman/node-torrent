@@ -1,6 +1,9 @@
-<div class="control-group row-fluid">
-    <input class="input span12" name="url" ng-model="torrent.url" placeholder="URL" required>
-</div>
-<div class="row-fluid" style="text-align: center">
-    <button ng-click="save()" class="btn btn-success span12">Add</button>
-</div>
+<form name="popoverForm" class="span12">
+    <div class="row-fluid" style="padding-bottom: 15px">
+        <input class="input span12" name="url" ng-model="torrent.url" placeholder="URL / Magnet" required>
+    </div>
+
+    <div class="row-fluid">
+        <button class="btn btn-success span12" ng-click="save()">Add</button>
+    </div>
+</form>
