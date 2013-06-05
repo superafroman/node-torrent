@@ -1,5 +1,4 @@
 var http = require('http');
-var request = require('request');
 var fs = require('fs');
 var util = require('util');
 var urlParser = require('url');
@@ -30,14 +29,9 @@ function WebServer(optionsPath) {
 
     this.optionsPath = optionsPath;
 
-    fs.watch(this.optionsPath, {persistent: false}, function (event, filename) {
-        if (event === 'rename') {
-            self.optionsPath = filename || self.optionsPath;
-        } else if (event === 'change') {
-            LOGGER.warn('The options file was changed!');
-            self._readOptionsFile();
-        }
-    });
+    if (fs.existsSync(this.optionsPath)) {
+        this._watchOptionsFile();
+    }
 
     this._readOptionsFile(function () {
         self.torrentClient = new Client(self.options);
@@ -104,6 +98,24 @@ WebServer.prototype.handleRequest = function (req, res) {
     }
 };
 
+WebServer.prototype._watchOptionsFile = function () {
+    var self = this;
+
+    if (!this.optionWatcher) {
+        this.optionWatcher = fs.watch(this.optionsPath, {persistent: false}, function (event, filename) {
+            if (event === 'rename') {
+                LOGGER.warn('Options file was renamed to ' + filename);
+                self.optionsPath = filename || self.optionsPath;
+            } else if (event === 'change') {
+                LOGGER.warn('The options file was changed!');
+
+                // TODO Add callback to update node-torrent options after client will enable it.
+                self._readOptionsFile();
+            }
+        });
+    }
+};
+
 WebServer.prototype._readOptionsFile = function (/*cb*/) {
     var cb;
     if (typeof arguments[0] === 'function')
@@ -120,8 +132,13 @@ WebServer.prototype._readOptionsFile = function (/*cb*/) {
             options += data;
         })
         .on('close', function () {
-            self.options = JSON.parse(options) || defaultOptions;
-            cb();
+            try {
+                self.options = JSON.parse(options);
+            } catch (err) {
+                self.options = defaultOptions;
+            } finally {
+                cb();
+            }
         })
         .on('error', function (err) {
             LOGGER.error(err.message);
@@ -131,14 +148,16 @@ WebServer.prototype._readOptionsFile = function (/*cb*/) {
 };
 
 WebServer.prototype._postOptions = function (req, res) {
+    var self = this;
+
     var body = '';
     req.on('data', function (data) {
         body += data;
     })
         .on('end', function () {
-            LOGGER.info('Got an options object: ' + body);
+            LOGGER.info('Got an options object: ' + body + '.\nWriting into file ' + self.optionsPath);
 
-            var optionsFile = fs.createWriteStream(this.optionsPath)
+            var optionsFile = fs.createWriteStream(self.optionsPath)
                 .on('error', function () {
                     res.writeHead(400);
                     res.end();
@@ -146,6 +165,8 @@ WebServer.prototype._postOptions = function (req, res) {
             optionsFile.write(body, function () {
                 res.writeHead(204);
                 res.end();
+
+                self._watchOptionsFile();
             });
         });
 
