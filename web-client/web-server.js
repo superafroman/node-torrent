@@ -140,10 +140,12 @@ WebServer.prototype._postOptions = function (req, res) {
 
             var optionsFile = fs.createWriteStream(this.optionsPath)
                 .on('error', function () {
-                    res.writeHead(400).end();
+                    res.writeHead(400);
+                    res.end();
                 });
             optionsFile.write(body, function () {
-                res.writeHead(204).end();
+                res.writeHead(204);
+                res.end();
             });
         });
 
@@ -162,11 +164,13 @@ WebServer.prototype._postTorrent = function (req, res) {
 
             var object = JSON.parse(body);
             self.torrentClient.addTorrent(object.url);
-            res.writeHead(204).end();
+            res.writeHead(204);
+            res.end();
         })
         .on('error', function (err) {
             LOGGER.error(err);
-            res.writeHead(400).end();
+            res.writeHead(400);
+            res.end();
         });
 
     return this;
