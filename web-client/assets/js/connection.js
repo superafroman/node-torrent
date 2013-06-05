@@ -1,6 +1,9 @@
-angular.module('connection', ['ngResource']).
+'use strict';
+var connections = angular.module('connection', ['ngResource']).
     factory('Torrents', function ($resource) {
-        var Torrents = $resource('/torrentList', {});
-
-        return Torrents;
+        return $resource('/torrentList', {});
     });
+
+connections.factory('Options', function ($resource) {
+    return $resource('/options', {});
+});
