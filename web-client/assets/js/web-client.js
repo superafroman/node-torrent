@@ -2,6 +2,7 @@ var app = angular.module('web-client', ['connection', 'byte-filters', '$strap.di
     config(function ($routeProvider) {
         $routeProvider.
             when('/', {controller: ListCtrl, templateUrl: 'partials/list.html'}).
+            when('/prefs', {controller: PrefsCtrl, templateUrl: 'partials/preferences.html'}).
             otherwise({redirectTo: '/'});
     });
 
@@ -16,6 +17,14 @@ function ListCtrl($scope, $timeout, Torrents) {
     timedQuery();
 }
 
+function PrefsCtrl($scope, Options) {
+    $scope.options = Options.query();
+
+    $scope.saveOptions = function () {
+        Options.save($scope.options);
+    };
+}
+
 app.controller('AddCtrl', function ($scope, $log, Torrents) {
     // Torrent url supported
     var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
@@ -23,15 +32,15 @@ app.controller('AddCtrl', function ($scope, $log, Torrents) {
 
     $scope.torrent = {};
 
-    $scope.save = function () {
+    $scope.saveTorrent = function () {
         if ($scope.torrent.url &&
             ((magnetPattern.test($scope.torrent.url)) ||
                 urlPattern.test($scope.torrent.url))) {
 
             Torrents.save($scope.torrent, function () {
+                $scope.torrent = {};
             });
             $scope.hide();
-            $scope.torrent = {};
         }
     }
 });
