@@ -1,9 +1,12 @@
+'use strict';
 var app = angular.module('web-client', ['connection', 'byte-filters', '$strap.directives']).
-    config(function ($routeProvider) {
+    config(function ($routeProvider, $locationProvider) {
         $routeProvider.
             when('/', {controller: ListCtrl, templateUrl: 'partials/list.html'}).
             when('/prefs', {controller: PrefsCtrl, templateUrl: 'partials/preferences.html'}).
             otherwise({redirectTo: '/'});
+
+        $locationProvider.html5Mode(true);
     });
 
 function ListCtrl($scope, $timeout, Torrents) {
@@ -11,21 +14,23 @@ function ListCtrl($scope, $timeout, Torrents) {
         $timeout(function () {
             $scope.torrents = Torrents.query();
             timedQuery();
-        }, ($scope.torrents && $scope.torrents.length > 0 ? 1000 : 5000));
+        }, 3000);
     }
 
     timedQuery();
 }
 
-function PrefsCtrl($scope, Options) {
-    $scope.options = Options.query();
+function PrefsCtrl($scope, $location, Options) {
+    $scope.options = Options.get();
 
     $scope.saveOptions = function () {
-        Options.save($scope.options);
+        Options.save($scope.options, function () {
+            $location.url('/');
+        });
     };
 }
 
-app.controller('AddCtrl', function ($scope, $log, Torrents) {
+app.controller('AddCtrl', function ($scope, Torrents) {
     // Torrent url supported
     var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
     var magnetPattern = /magnet:\?xt=urn:\S{20,200}/i;
