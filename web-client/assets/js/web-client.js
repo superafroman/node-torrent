@@ -30,6 +30,10 @@ function PrefsCtrl($scope, $location, Options) {
     };
 }
 
+app.controller('LoadCtrl', ['$scope', function ($scope) {
+    $scope.AppName = "Node-Torrent WebApp";
+}]);
+
 app.controller('AddCtrl', function ($scope, Torrents) {
     // Torrent url supported
     var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
