@@ -9,15 +9,17 @@ var app = angular.module('web-client', ['connection', 'byte-filters', '$strap.di
         $locationProvider.html5Mode(true);
     });
 
+var queryPromise;
 function ListCtrl($scope, $timeout, Torrents) {
-    function timedQuery() {
-        $timeout(function () {
-            $scope.torrents = Torrents.query();
-            timedQuery();
-        }, 3000);
-    }
+    var timedQuery = function () {
+        $scope.torrents = Torrents.query();
+        $timeout(timedQuery, 3000);
+    };
 
-    timedQuery();
+    $scope.torrents = Torrents.query();
+    if (!queryPromise) {
+        queryPromise = $timeout(timedQuery, 3000);
+    }
 }
 
 function PrefsCtrl($scope, $location, Options) {
@@ -30,7 +32,7 @@ function PrefsCtrl($scope, $location, Options) {
     };
 }
 
-app.controller('LoadCtrl', ['$scope', function ($scope) {
+app.controller('MainCtrl', ['$scope', function ($scope) {
     $scope.AppName = "Node-Torrent WebApp";
 }]);
 
