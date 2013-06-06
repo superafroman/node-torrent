@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <!--suppress HtmlFormInputWithoutLabel, HtmlUnknownTarget -->
-<html ng-app="web-client">
+<html ng-app="web-client" ng-controller="LoadCtrl">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-    <!--<link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
-    <!--<link href="libs/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">-->
+    <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">-->
+    <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="libs/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="css/web-client.css" rel="stylesheet">
-    <!--<script src="libs/jquery/jquery-2.0.2.min.js"></script>-->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <!--<script src="libs/angular/angular.min.js"></script>-->
-    <!--<script src="libs/angular/angular-resource.min.js"></script>-->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
-    <!--<script src="libs/bootstrap/js/bootstrap.min.js"></script>-->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <!--<script src="libs/angular-strap/angular-strap.min.js"></script>-->
-    <script src="//mgcrea.github.com/angular-strap/js/angular-strap.js"></script>
+    <script src="libs/jquery/jquery-2.0.2.min.js"></script>
+    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>-->
+    <script src="libs/angular/angular.min.js"></script>
+    <script src="libs/angular/angular-resource.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>-->
+    <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>-->
+    <script src="libs/angular-strap/angular-strap.min.js"></script>
+    <!--<script src="//mgcrea.github.com/angular-strap/js/angular-strap.js"></script>-->
     <script src="js/web-client.js"></script>
     <script src="js/connection.js"></script>
     <script src="js/filters.js"></script>
+    <title>{{AppName}}</title>
 </head>
 <body>
 <div id="wrapper" class="container-fluid">
     <header>
-        <h2>node-torrent Client</h2>
+        <h2>{{AppName}}</h2>
     </header>
     <div class="row-fluid">
         <div class="span6">
