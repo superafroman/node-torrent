@@ -11,9 +11,10 @@ An angular.js web application for node-torrent
   * Magnet links
   * Add torrent via URL (file:, https:, http:, magnet:)
   * Simple web server that runs locally and hosts web interface
-  
-## In progress
   * Mobile support
+
+## In progress
+  * Pause/Resume Torrent
 
 ## TODO
   * Share ratio
