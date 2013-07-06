@@ -26,7 +26,7 @@ An angular.js web application for node-torrent
 
 ## Usage
     * Download
-        $ git clone git://github.com/davidyaha/node-torrent.git
+        $ git clone https://github.com/davidyaha/node-torrent-webapp.git
 
     * Install
         $ cd node-torrent
