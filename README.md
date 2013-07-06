@@ -29,7 +29,7 @@ An angular.js web application for node-torrent
         $ git clone https://github.com/davidyaha/node-torrent-webapp.git
 
     * Install
-        $ cd node-torrent
+        $ cd node-torrent-webapp
         $ npm install
 
     * Run
