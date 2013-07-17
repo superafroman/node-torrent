@@ -6,7 +6,7 @@
         <th>Progress</th>
         <th>Download Speed</th>
         <th class="hidden-phone">Upload Speed</th>
-        <th>Estimated</th>
+        <th class="hidden-phone">Estimated</th>
     </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
         </td>
         <td>{{torrent.downloadRate | speed }}</td>
         <td class="hidden-phone">{{torrent.uploadRate | speed}}</td>
-        <td>{{torrent.estimated}}</td>
+        <td class="hidden-phone">{{torrent.estimated}}</td>
     </tr>
     </tbody>
 </table>

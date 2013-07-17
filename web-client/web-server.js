@@ -38,6 +38,11 @@ function WebServer(optionsPath) {
     });
 
     this.server = http.createServer(this.handleRequest.bind(this));
+    this.server.on('error', function(err) {
+        LOGGER.error(err.message);
+        setTimeout(function(){process.exit(1)}, 2);
+    });
+
 }
 
 WebServer.MimeMap = {

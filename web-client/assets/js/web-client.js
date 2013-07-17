@@ -13,12 +13,12 @@ var queryPromise;
 function ListCtrl($scope, $timeout, Torrents) {
     var timedQuery = function () {
         $scope.torrents = Torrents.query();
-        $timeout(timedQuery, 3000);
+        $timeout(timedQuery, 1000);
     };
 
     $scope.torrents = Torrents.query();
     if (!queryPromise) {
-        queryPromise = $timeout(timedQuery, 3000);
+        queryPromise = $timeout(timedQuery, 1000);
     }
 }
 
