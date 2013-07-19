@@ -1,12 +1,12 @@
 <table class="table table-condensed table-hover my-table">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Downloaded</th>
-        <th>Progress</th>
-        <th>Download Speed</th>
-        <th class="hidden-phone">Upload Speed</th>
-        <th class="hidden-phone">Estimated</th>
+        <th width="30%">Name</th>
+        <th width="10%">Downloaded</th>
+        <th width="15%">Progress</th>
+        <th widht="15%">Download Speed</th>
+        <th width="15%" class="hidden-phone">Upload Speed</th>
+        <th width="15%" class="hidden-phone">Estimated</th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +21,9 @@
         <td>{{torrent.downloadRate | speed }}</td>
         <td class="hidden-phone">{{torrent.uploadRate | speed}}</td>
         <td class="hidden-phone">{{torrent.estimated}}</td>
+    </tr>
+    <tr ng-show="!torrents.length">
+        <td colspan="6">Click "Add torrent" to download...</td>
     </tr>
     </tbody>
 </table>

@@ -12,7 +12,9 @@ var app = angular.module('web-client', ['connection', 'byte-filters', '$strap.di
 var queryPromise;
 function ListCtrl($scope, $timeout, Torrents) {
     var timedQuery = function () {
-        $scope.torrents = Torrents.query();
+        var list = Torrents.query(function(){
+            $scope.torrents = list;
+        });
         $timeout(timedQuery, 1000);
     };
 
