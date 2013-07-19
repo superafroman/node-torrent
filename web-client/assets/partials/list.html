@@ -2,8 +2,8 @@
     <thead>
     <tr>
         <th width="30%">Name</th>
-        <th width="10%">Downloaded</th>
-        <th width="15%">Progress</th>
+        <th width="15%">Downloaded</th>
+        <th width="10%">Progress</th>
         <th widht="15%">Download Speed</th>
         <th width="15%" class="hidden-phone">Upload Speed</th>
         <th width="15%" class="hidden-phone">Estimated</th>
@@ -12,7 +12,7 @@
     <tbody>
     <tr ng-repeat="torrent in torrents | filter:search | orderBy:'name'">
         <td>{{torrent.name}}</td>
-        <td>{{torrent.downloaded | size}}</td>
+        <td>{{torrent.downloaded | size}}/{{ torrent.size | size }}</td>
         <td>
             <div class="progress progress-striped active">
                 <div class="bar" style="width: {{torrent.progress}}%"></div>

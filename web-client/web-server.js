@@ -35,6 +35,18 @@ function WebServer(optionsPath) {
         self.torrentClient = new Client(self.options);
     });
 
+    log4js.configure({
+        appenders: [
+            { type: 'file', filename: 'logs/root.log', maxLogSize: 20480, backups: 0},
+            {type: 'file', filename: 'logs/debug.log', maxLogSize: 20480, backups: 0, category: 'debug'},
+            {type: 'file', filename: 'logs/peer.log', maxLogSize: 20480, backups: 0, category: 'peer.js'},
+            {type: 'file', filename: 'logs/piece.log', maxLogSize: 20480, backups: 0, category: 'piece.js'},
+            {type: 'file', filename: 'logs/torrent.log', maxLogSize: 20480, backups: 0, category: 'torrent.js'},
+            {type: 'file', filename: 'logs/requestmanager.log', maxLogSize: 20480, backups: 0, category: 'torrent/requestmanager.js'}
+        ],
+        replaceConsole: true
+    });
+
     this.server = http.createServer(this.handleRequest.bind(this));
     this.server.on('error', function(err) {
         LOGGER.error(err.message);
