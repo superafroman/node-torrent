@@ -1,0 +1,42 @@
+<!--suppress HtmlFormInputWithoutLabel -->
+<form class='span7 form-horizontal'>
+    <legend>Preferences</legend>
+    <div class="control-group">
+        <label class="control-label" for="downloadPath">Download Directory:</label>
+
+        <div class="controls">
+            <input type="text" id="downloadPath" placeholder="{{options.downloadPath}}" ng-model="options.downloadPath"
+                   pattern="([A-Z]:\\[^/:\*\?<>\|]+)|(\\{2}[^/:\*\?<>\|]+)" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="portRange">Port Range:</label>
+
+        <div class="controls" id="portRange">
+            <input type="number" ng-model="options.portRange.start"
+                   placeholder="{{options.portRange.start}}" required>
+            To <input type="number" ng-model="options.portRange.end"
+                      placeholder="{{options.portRange.end}}" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="logLevel">Log Level:</label>
+
+        <div class="controls">
+            <div id="logLevel" class="btn-group" ng-model="options.logLevel" bs-buttons-radio>
+                <button type="button" class="btn btn-info" value="INFO">Info</button>
+                <button type="button" class="btn btn-warning" value="WARN">Warn</button>
+                <button type="button" class="btn btn-danger" value="ERROR">Error</button>
+                <button typr="button" class="btn btn-success" value="DEBUG">Debug</button>
+            </div>
+        </div>
+    </div>
+    <br/>
+
+    <div class="control-group">
+        <div class="controls">
+            <button class="btn btn-primary" ng-click="saveOptions()" type="submit">Save</button>
+            <a class="btn" href="/">Cancel</a>
+        </div>
+    </div>
+</form>
