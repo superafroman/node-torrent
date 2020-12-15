@@ -1,4 +1,6 @@
 /test.torrent
 /test-2.torrent
+/node_modules/
 /ref
 .project
+app.js
